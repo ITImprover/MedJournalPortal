@@ -5,17 +5,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<title>Регистрация</title>
+<title>Medical Journals Portal - Sign Up</title>
 </head>
 <body>
-Регистрация:
-<form action="signup" method="POST">
-    <input type="hidden" name="action" value="register" />
-	E-mail:<input type="text" name="name"/><br/>
-	password:<input type="password" name="password"/><br/>
-	Retype password:<input type="password" name="password_again"/><br/>
-	<input type="submit"/>
-</form>
+    <c:if test="${!empty requestScope.errorMessage}">
+        <p class="errorMessageText">${requestScope.errorMessage}</p>
+    </c:if>
+    <form action="register" method="POST">
+        <table border="0">
+            <tr><td>E-mail:</td><td><input type="text" name="email"/></td></tr>
+            <tr><td>Journal Name:</td><td><input type="text" name="journalName"/></td></tr>
+            <tr><td>password:</td><td><input type="password" name="password"/></td></tr>
+            <tr><td>Retype password:</td><td><input type="password" name="passwordAgain"/></td></tr>
+        </table>
+        <input type="submit" value="Sign Up"/>
+    </form>
 
 </body>
 </html>

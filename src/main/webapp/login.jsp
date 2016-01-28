@@ -7,8 +7,10 @@
     </c:if>
     Sign in:
     <form action="login" method="POST">
-        E-mail:<input type="text" name="email"/><br/>
-        Password:<input type="password" name="password"/><br/>
+        <table border="0">
+            <tr><td>E-mail:</td><td><input type="text" name="email"/></td></tr>
+            <tr><td>Password:</td><td><input type="password" name="password"/></td></tr>
+        </table>
         <input type="submit"/>
     </form>
 	<a href="registration.jsp">Sign Up</a>

@@ -19,7 +19,8 @@ import java.sql.SQLException;
 public class UserService {
 
     private static final String IS_USER_EXISTS_SQL = "SELECT id FROM MED_JOURNALS.USERS WHERE name = ?";
-    private static final String ADD_USER_SQL = "INSERT INTO MED_JOURNALS.USERS (EMAIL, PASSWORD, JOURNAL_NAME) VALUES (?, ?)";
+    private static final String ADD_USER_SQL
+            = "INSERT INTO MED_JOURNALS.USERS (EMAIL, PASSWORD, JOURNAL_NAME) VALUES (?, ?, ?)";
     private static final String LOGIN_SQL = "SELECT JOURNAL_NAME FROM MED_JOURNALS.USERS WHERE EMAIL = ? AND PASSWORD = ?";
     private DataSource dataSource;
 
@@ -33,28 +34,36 @@ public class UserService {
      * @param email - user email
      * @param password - user password
      * @param passwordAgain - user password again
-     * @throws HabitsException
+     * @throws UserException
      */
-    public void registerUser(String email, String password, String passwordAgain) throws HabitsException, SQLException {
-        if (email.length() > 0 && password.length() > 0 && password.equals(passwordAgain)) {
+    public void registerUser(String email, String password, String passwordAgain, String journalName)
+            throws UserException, SQLException {
+        if (email.length() == 0) {
+            throw new UserException("email cannot be empty");
+        } else if (password.length() == 0) {
+            throw new UserException("password cannot be empty");
+        } else if (journalName.length() == 0) {
+            throw new UserException("password cannot be empty");
+        } else if (password.equals(passwordAgain)) {
+            throw new UserException("Passwords are not equal");
+        } else {
             Connection connection = dataSource.getConnection();
             try {
                 PreparedStatement ps = connection.prepareStatement(IS_USER_EXISTS_SQL);
                 ps.setString(1, email);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    throw new HabitsException("user already exists");
+                    throw new UserException("user already exists");
                 } else {
                     ps = connection.prepareStatement(ADD_USER_SQL);
                     ps.setString(1, email);
                     ps.setString(2, password);
+                    ps.setString(2, journalName);
                     ps.execute();
                 }
             } finally {
                 connection.close();
             }
-        } else {
-            throw new HabitsException("Password not equals another password or email is empty");
         }
     }
 
