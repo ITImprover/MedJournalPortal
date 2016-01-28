@@ -8,7 +8,8 @@
 <title>Medical Journals Portal - Sign Up</title>
 </head>
 <body>
-    <c:if test="${!empty requestScope.errorMessage}">
+	<a href="index.jsp">Sign In</a>
+	<c:if test="${!empty requestScope.errorMessage}">
         <p class="errorMessageText">${requestScope.errorMessage}</p>
     </c:if>
     <form action="register" method="POST">

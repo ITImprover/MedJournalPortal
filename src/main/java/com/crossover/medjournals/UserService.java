@@ -18,7 +18,7 @@ import java.sql.SQLException;
  */
 public class UserService {
 
-    private static final String IS_USER_EXISTS_SQL = "SELECT id FROM MED_JOURNALS.USERS WHERE name = ?";
+    private static final String IS_USER_EXISTS_SQL = "SELECT id FROM MED_JOURNALS.USERS WHERE EMAIL = ?";
     private static final String ADD_USER_SQL
             = "INSERT INTO MED_JOURNALS.USERS (EMAIL, PASSWORD, JOURNAL_NAME) VALUES (?, ?, ?)";
     private static final String LOGIN_SQL = "SELECT JOURNAL_NAME FROM MED_JOURNALS.USERS WHERE EMAIL = ? AND PASSWORD = ?";
@@ -44,7 +44,7 @@ public class UserService {
             throw new UserException("password cannot be empty");
         } else if (journalName.length() == 0) {
             throw new UserException("password cannot be empty");
-        } else if (password.equals(passwordAgain)) {
+        } else if (!password.equals(passwordAgain)) {
             throw new UserException("Passwords are not equal");
         } else {
             Connection connection = dataSource.getConnection();
@@ -58,7 +58,7 @@ public class UserService {
                     ps = connection.prepareStatement(ADD_USER_SQL);
                     ps.setString(1, email);
                     ps.setString(2, password);
-                    ps.setString(2, journalName);
+                    ps.setString(3, journalName);
                     ps.execute();
                 }
             } finally {

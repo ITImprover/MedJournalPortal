@@ -38,7 +38,8 @@ public class RegisterController extends AbstractController {
         } catch (SQLException e) {
             Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, e);
             request.setAttribute("errorMessage", "Something going wrong");
-            redirectTo(request, response, REGISTRATIONSP);
+            //redirectTo(request, response, REGISTRATIONSP);
+            throw new ServletException(e);
         } catch (UserException e) {
             request.setAttribute("errorMessage", e.getMessage());
             redirectTo(request, response, REGISTRATIONSP);
