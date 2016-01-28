@@ -1,6 +1,7 @@
-package com.crossover.medjournals;
+package com.crossover.medjournals.dao;
 
-import javax.annotation.Resource;
+import com.crossover.medjournals.model.Session;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,10 +19,13 @@ import java.sql.SQLException;
  */
 public class UserService {
 
-    private static final String IS_USER_EXISTS_SQL = "SELECT id FROM MED_JOURNALS.USERS WHERE EMAIL = ?";
+    private static final String GET_USER_ID_BY_EMAIL_SQL
+            = "SELECT id FROM MED_JOURNALS.USERS WHERE EMAIL = ?";
     private static final String ADD_USER_SQL
             = "INSERT INTO MED_JOURNALS.USERS (EMAIL, PASSWORD, JOURNAL_NAME) VALUES (?, ?, ?)";
-    private static final String LOGIN_SQL = "SELECT JOURNAL_NAME FROM MED_JOURNALS.USERS WHERE EMAIL = ? AND PASSWORD = ?";
+    private static final String LOGIN_SQL
+            = "SELECT ID, JOURNAL_NAME FROM MED_JOURNALS.USERS WHERE EMAIL = ? AND PASSWORD = ?";
+
     private DataSource dataSource;
 
     public UserService(DataSource dataSource) {
@@ -49,21 +53,41 @@ public class UserService {
         } else {
             Connection connection = dataSource.getConnection();
             try {
-                PreparedStatement ps = connection.prepareStatement(IS_USER_EXISTS_SQL);
-                ps.setString(1, email);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
+                Integer id = getUserIdByEmail(email, connection);
+                if (id != null) {
                     throw new UserException("user already exists");
                 } else {
-                    ps = connection.prepareStatement(ADD_USER_SQL);
+                    PreparedStatement ps = connection.prepareStatement(ADD_USER_SQL);
                     ps.setString(1, email);
                     ps.setString(2, password);
                     ps.setString(3, journalName);
                     ps.execute();
+                    ps = connection.prepareStatement(GET_USER_ID_BY_EMAIL_SQL);
+                    ps.setString(1, email);
                 }
             } finally {
                 connection.close();
             }
+        }
+    }
+
+    public Integer getUserIdByEmail(String email) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        try {
+            return getUserIdByEmail(email, connection);
+        } finally {
+            connection.close();
+        }
+    }
+
+    private Integer getUserIdByEmail(String email, Connection connection) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(GET_USER_ID_BY_EMAIL_SQL);
+        ps.setString(1, email);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        } else {
+            return null;
         }
     }
 
@@ -74,7 +98,7 @@ public class UserService {
      * @param password
      * @return user id
      */
-    public String login(String email, String password) throws SQLException {
+    public Session login(String email, String password) throws SQLException {
         Connection connection = dataSource.getConnection();
 
         try {
@@ -84,7 +108,11 @@ public class UserService {
             ps.setString(2, password);
 
             ResultSet result = ps.executeQuery();
-            return result.next() ? result.getString("JOURNAL_NAME") : null;
+            if (!result.next()) {
+                return null;
+            } else {
+                return new Session(result.getInt("ID"), result.getString("JOURNAL_NAME"));
+            }
         } finally {
             connection.close();
         }

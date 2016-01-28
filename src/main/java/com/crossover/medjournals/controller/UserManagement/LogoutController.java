@@ -1,4 +1,6 @@
-package com.crossover.medjournals;
+package com.crossover.medjournals.controller.UserManagement;
+
+import com.crossover.medjournals.controller.AbstractController;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -6,9 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @WebServlet("/logout")
 public class LogoutController extends AbstractController {
@@ -21,7 +20,7 @@ public class LogoutController extends AbstractController {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getSession().invalidate();
-        redirectTo(request, response, INDEXJSP);
+        redirectTo(request, response, INDEX_JSP);
     }
 
 }

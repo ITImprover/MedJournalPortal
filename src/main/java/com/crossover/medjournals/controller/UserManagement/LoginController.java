@@ -1,13 +1,14 @@
-package com.crossover.medjournals;
+package com.crossover.medjournals.controller.UserManagement;
 
-import javax.annotation.Resource;
+import com.crossover.medjournals.controller.AbstractController;
+import com.crossover.medjournals.dao.UserService;
+import com.crossover.medjournals.model.Session;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -30,19 +31,20 @@ public class LoginController extends AbstractController {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            String journalName = userService.login(email, password);
+            Session session = userService.login(email, password);
 
-            if (journalName == null) {
+            if (session == null) {
                 request.setAttribute("errorMessage", "Incorrect e-mail or password");
             } else {
-                request.getSession().setAttribute("username", journalName);
+                request.getSession().setAttribute("userId", session.getUserId());
+                request.getSession().setAttribute("journalName", session.getJournalName());
                 request.getSession().setAttribute("isLoggedIn", true);
             }
         } catch (SQLException e) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
             request.setAttribute("errorMessage", "Something going wrong");
         } finally {
-            redirectTo(request, response, INDEXJSP);
+            redirectTo(request, response, INDEX_JSP);
         }
     }
 

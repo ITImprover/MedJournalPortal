@@ -11,7 +11,7 @@
             <tr><td>E-mail:</td><td><input type="text" name="email"/></td></tr>
             <tr><td>Password:</td><td><input type="password" name="password"/></td></tr>
         </table>
-        <input type="submit"/>
+        <input type="submit" value="Sign In"/>
     </form>
 	<a href="registration.jsp">Sign Up</a>
 </c:if>

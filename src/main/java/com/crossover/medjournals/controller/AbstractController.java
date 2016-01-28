@@ -1,4 +1,4 @@
-package com.crossover.medjournals;
+package com.crossover.medjournals.controller;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -12,7 +12,7 @@ import java.io.IOException;
  * Created by Денис on 25.01.2016.
  */
 public class AbstractController extends HttpServlet {
-    public static final String INDEXJSP = "index.jsp";
+    public static final String INDEX_JSP = "index.jsp";
     @Resource(name = "jdbc/JournalsDB")
     protected DataSource dataSource;
 
