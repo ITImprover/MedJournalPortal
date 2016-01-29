@@ -1,5 +1,7 @@
 package com.crossover.medjournals.dao;
 
+import com.crossover.medjournals.model.Journal;
+
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -26,6 +28,7 @@ public class IssueService {
             = "INSERT INTO MED_JOURNALS.ISSUES (USER_ID, NAME, CONTENT) VALUES (?, ?, ?)";
     private static final String GET_PUBLISHER_ISSUES_SQL
             = "SELECT NAME FROM MED_JOURNALS.ISSUES WHERE USER_ID = ?";
+    private static final String GET_SUBSCRIPTIONS_SQL = "SELECT NAME, USER_ID FROM MED_JOURNALS.ISSUES WHERE USER_ID = ?";
     private DataSource dataSource;
 
     public IssueService(DataSource dataSource) {
@@ -78,6 +81,22 @@ public class IssueService {
         } finally {
             connection.close();
         }
+        return result;
+    }
+
+    public List<Journal> getSubscriptionsByUserId(Integer userId) {
+        List<Journal> result = new ArrayList<Journal>();
+//        Connection connection = dataSource.getConnection();
+//        try {
+//            PreparedStatement ps = connection.prepareStatement(GET_SUBSCRIPTIONS_SQL);
+//            ps.setInt(1, userId);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                result.add(rs.getString("NAME"));
+//            }
+//        } finally {
+//            connection.close();
+//        }
         return result;
     }
 }

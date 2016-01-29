@@ -13,7 +13,7 @@ import java.io.IOException;
 public class MainPageController extends AbstractController {
 
     private static final String PUBLISHER_ISSUES = "publisherIssues";
-    private static final String SUBSCRIBER_JOURNALS = "subscriberJournals";
+    private static final String SUBSCRIBER_JOURNALS = "subscriptions";
     private IssueService issueService;
 
     @Override
