@@ -11,14 +11,14 @@
 
     <jsp:include page="menu.jsp"/>
     <jsp:include page="login.jsp"/>
-    Issues of your journal "${sessionScope.journalName}"
+    <h1>Issues of your journal "${sessionScope.journalName}"</h1>
     <c:if test="${!empty requestScope.errorMessage}">
         <p class="errorMessageText">${requestScope.errorMessage}</p>
     </c:if>
     <c:if test="${!empty sessionScope.journalName}">
-        <%--c:forEach items="${requestScope.data}" var="item">
+        <c:forEach items="${requestScope.issues}" var="item">
             ${item} <br/>
-        </c:forEach--%>
+        </c:forEach>
     </c:if>
 
 </body>

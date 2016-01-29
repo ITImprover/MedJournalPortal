@@ -1,5 +1,6 @@
-package com.crossover.medjournals.controller;
+package com.crossover.medjournals.controller.publisher;
 
+import com.crossover.medjournals.controller.AbstractController;
 import com.crossover.medjournals.controller.UserManagement.RegisterController;
 import com.crossover.medjournals.dao.IssueException;
 import com.crossover.medjournals.dao.IssueService;
@@ -16,7 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/upload")
-public class UploadController extends AbstractServlet {
+public class UploadController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
     private static final String UPLOAD_JSP = "uploadIssue.jsp";
@@ -42,7 +43,7 @@ public class UploadController extends AbstractServlet {
                 fileContent = filePart.getInputStream();
 
                 issueService.addIssue((Integer) request.getSession().getAttribute("userId"), fileName, fileContent);
-                redirect(response, INDEX_JSP);
+                redirect(response, MAIN_PAGE);
             } catch (FileNotFoundException e) {
                 LOGGER.log(Level.SEVERE, null, e);
                 request.setAttribute("errorMessage", "You either did not specify a file to upload or are trying to upload "
@@ -62,7 +63,7 @@ public class UploadController extends AbstractServlet {
             }
         } else {
             request.setAttribute("errorMessage", "You don't have permission for uploading");
-            redirect(response, INDEX_JSP);
+            redirect(response, MAIN_PAGE);
         }
     }
 

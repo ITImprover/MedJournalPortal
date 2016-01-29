@@ -1,6 +1,6 @@
 package com.crossover.medjournals.controller.UserManagement;
 
-import com.crossover.medjournals.controller.AbstractServlet;
+import com.crossover.medjournals.controller.AbstractController;
 import com.crossover.medjournals.dao.UserException;
 import com.crossover.medjournals.dao.UserService;
 
@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/register")
-public class RegisterController extends AbstractServlet {
+public class RegisterController extends AbstractController {
     public static final String REGISTRATION_JSP = "registration.jsp";
 
     private UserService userService;
@@ -41,7 +41,7 @@ public class RegisterController extends AbstractServlet {
             } else {
                 request.getSession().setAttribute("userId", userId);
                 request.getSession().setAttribute("journalName", journalName);
-                redirect(response, INDEX_JSP);
+                redirect(response, MAIN_PAGE);
             }
         } catch (SQLException e) {
             Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, e);

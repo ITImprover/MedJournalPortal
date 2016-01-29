@@ -11,8 +11,8 @@ import java.io.IOException;
 /**
  * Created by Денис on 25.01.2016.
  */
-public class AbstractServlet extends HttpServlet {
-    protected static final String INDEX_JSP = "";
+public class AbstractController extends HttpServlet {
+    protected static final String MAIN_PAGE = "";
     protected static final String LOGIN_JSP = "login.jsp";
     @Resource(name = "jdbc/JournalsDB")
     protected DataSource dataSource;

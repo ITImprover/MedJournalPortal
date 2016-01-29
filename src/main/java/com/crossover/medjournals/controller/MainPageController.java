@@ -1,5 +1,7 @@
 package com.crossover.medjournals.controller;
 
+import com.crossover.medjournals.dao.IssueService;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,10 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/")
-public class MainPageServlet extends AbstractServlet {
+public class MainPageController extends AbstractController {
 
-    private static final String PUBLISHER_ISSUES_JSP = "publisherIssues.jsp";
-    private static final String SUBSCRIBER_JOURNALS_JSP = "subscriberJournals.jsp";
+    private static final String PUBLISHER_ISSUES = "publisherIssues";
+    private static final String SUBSCRIBER_JOURNALS = "subscriberJournals";
+    private IssueService issueService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -20,12 +23,11 @@ public class MainPageServlet extends AbstractServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Integer userId = (Integer) request.getSession().getAttribute("userId");
         if (request.getSession().getAttribute("userId") != null) {
             if (!"".equals(request.getSession().getAttribute("journalName"))) {
-                redirect(response, PUBLISHER_ISSUES_JSP);
+                redirect(response, PUBLISHER_ISSUES);
             } else {
-                redirect(response, SUBSCRIBER_JOURNALS_JSP);
+                redirect(response, SUBSCRIBER_JOURNALS);
             }
         } else {
             redirect(response, LOGIN_JSP);

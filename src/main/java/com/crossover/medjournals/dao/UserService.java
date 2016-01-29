@@ -60,8 +60,6 @@ public class UserService {
                     ps.setString(2, password);
                     ps.setString(3, journalName);
                     ps.execute();
-                    ps = connection.prepareStatement(GET_USER_ID_BY_EMAIL_SQL);
-                    ps.setString(1, email);
                 }
             } finally {
                 connection.close();
