@@ -8,16 +8,17 @@
 <title>Medical Journals Portal - Sign Up</title>
 </head>
 <body>
-	<a href="index.jsp">Sign In</a>
+	<a href="login.jsp">Sign In</a>
 	<c:if test="${!empty requestScope.errorMessage}">
         <p class="errorMessageText">${requestScope.errorMessage}</p>
     </c:if>
     <form action="register" method="POST">
         <table border="0">
             <tr><td>E-mail:</td><td><input type="text" name="email"/></td></tr>
-            <tr><td>Journal Name:</td><td><input type="text" name="journalName"/></td></tr>
             <tr><td>password:</td><td><input type="password" name="password"/></td></tr>
             <tr><td>Retype password:</td><td><input type="password" name="passwordAgain"/></td></tr>
+            <tr><td><b>For Publishers Only:</b></td></tr>
+            <tr><td>For Publishers Journal Name:</td><td><input type="text" name="journalName"/></td></tr>
         </table>
         <input type="submit" value="Sign Up"/>
     </form>

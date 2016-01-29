@@ -46,8 +46,6 @@ public class UserService {
             throw new UserException("email cannot be empty");
         } else if (password.length() == 0) {
             throw new UserException("password cannot be empty");
-        } else if (journalName.length() == 0) {
-            throw new UserException("password cannot be empty");
         } else if (!password.equals(passwordAgain)) {
             throw new UserException("Passwords are not equal");
         } else {

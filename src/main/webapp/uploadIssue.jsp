@@ -10,7 +10,7 @@
 <body>
     <jsp:include page="login.jsp"/>
     <jsp:include page="menu.jsp"/>
-    <c:if test="${!empty sessionScope.isLoggedIn}">
+    <c:if test="${!empty sessionScope.userId}">
         <c:if test="${!empty requestScope.errorMessage}">
             <p class="errorMessageText">${requestScope.errorMessage}</p>
         </c:if>

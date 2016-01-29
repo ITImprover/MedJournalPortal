@@ -11,12 +11,18 @@ import java.io.IOException;
 /**
  * Created by Денис on 25.01.2016.
  */
-public class AbstractController extends HttpServlet {
-    public static final String INDEX_JSP = "index.jsp";
+public class AbstractServlet extends HttpServlet {
+    protected static final String INDEX_JSP = "";
+    protected static final String LOGIN_JSP = "login.jsp";
     @Resource(name = "jdbc/JournalsDB")
     protected DataSource dataSource;
 
-    protected void redirectTo(HttpServletRequest request, HttpServletResponse response, String jspName) throws ServletException, IOException {
+    protected void forward(HttpServletRequest request, HttpServletResponse response, String jspName) throws ServletException, IOException {
         request.getRequestDispatcher(jspName).forward(request, response);
     }
+
+    protected void redirect(HttpServletResponse response, String jspName) throws ServletException, IOException {
+        response.sendRedirect(jspName);
+    }
+
 }

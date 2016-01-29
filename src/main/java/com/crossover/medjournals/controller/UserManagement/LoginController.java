@@ -1,6 +1,6 @@
 package com.crossover.medjournals.controller.UserManagement;
 
-import com.crossover.medjournals.controller.AbstractController;
+import com.crossover.medjournals.controller.AbstractServlet;
 import com.crossover.medjournals.dao.UserService;
 import com.crossover.medjournals.model.Session;
 
@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/login")
-public class LoginController extends AbstractController {
+public class LoginController extends AbstractServlet {
 
     private UserService userService;
 
@@ -35,16 +35,16 @@ public class LoginController extends AbstractController {
 
             if (session == null) {
                 request.setAttribute("errorMessage", "Incorrect e-mail or password");
+                forward(request, response, LOGIN_JSP);
             } else {
                 request.getSession().setAttribute("userId", session.getUserId());
                 request.getSession().setAttribute("journalName", session.getJournalName());
-                request.getSession().setAttribute("isLoggedIn", true);
+                redirect(response, INDEX_JSP);
             }
         } catch (SQLException e) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, e);
             request.setAttribute("errorMessage", "Something going wrong");
-        } finally {
-            redirectTo(request, response, INDEX_JSP);
+            forward(request, response, LOGIN_JSP);
         }
     }
 

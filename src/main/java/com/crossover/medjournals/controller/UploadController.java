@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/upload")
-public class UploadController extends AbstractController {
+public class UploadController extends AbstractServlet {
 
     private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
     private static final String UPLOAD_JSP = "uploadIssue.jsp";
@@ -30,34 +30,39 @@ public class UploadController extends AbstractController {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        if (!"".equals(request.getSession().getAttribute("journalName"))) {
+            response.setContentType("text/html;charset=UTF-8");
 
-        // Create path components to save the file
-        final Part filePart = request.getPart("issue");
-        final String fileName = getFileName(filePart);
+            // Create path components to save the file
+            final Part filePart = request.getPart("issue");
+            final String fileName = getFileName(filePart);
 
-        InputStream fileContent = null;
-        try {
-            fileContent = filePart.getInputStream();
+            InputStream fileContent = null;
+            try {
+                fileContent = filePart.getInputStream();
 
-            issueService.addIssue((Integer) request.getSession().getAttribute("userId"), fileName, fileContent);
-            redirectTo(request, response, INDEX_JSP);
-        } catch (FileNotFoundException e) {
-            LOGGER.log(Level.SEVERE, null, e);
-            request.setAttribute("errorMessage", "You either did not specify a file to upload or are trying to upload "
-                    + "a file to a protected or nonexistent location.");
-            redirectTo(request, response, UPLOAD_JSP);
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, null, e);
-            request.setAttribute("errorMessage", "Something going wrong");
-            redirectTo(request, response, UPLOAD_JSP);
-        } catch (IssueException e) {
-            request.setAttribute("errorMessage", e.getMessage());
-            redirectTo(request, response, UPLOAD_JSP);
-        } finally {
-            if (fileContent != null) {
-                fileContent.close();
+                issueService.addIssue((Integer) request.getSession().getAttribute("userId"), fileName, fileContent);
+                redirect(response, INDEX_JSP);
+            } catch (FileNotFoundException e) {
+                LOGGER.log(Level.SEVERE, null, e);
+                request.setAttribute("errorMessage", "You either did not specify a file to upload or are trying to upload "
+                        + "a file to a protected or nonexistent location.");
+                forward(request, response, UPLOAD_JSP);
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, null, e);
+                request.setAttribute("errorMessage", "Something going wrong");
+                forward(request, response, UPLOAD_JSP);
+            } catch (IssueException e) {
+                request.setAttribute("errorMessage", e.getMessage());
+                forward(request, response, UPLOAD_JSP);
+            } finally {
+                if (fileContent != null) {
+                    fileContent.close();
+                }
             }
+        } else {
+            request.setAttribute("errorMessage", "You don't have permission for uploading");
+            redirect(response, INDEX_JSP);
         }
     }
 

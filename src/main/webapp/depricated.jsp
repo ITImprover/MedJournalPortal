@@ -9,8 +9,16 @@
 </head>
 <body>
 
-<jsp:include page="login.jsp"/>
-<jsp:include page="menu.jsp"/>
+    <jsp:include page="menu.jsp"/>
+    <jsp:include page="login.jsp"/>
+    <c:if test="${!empty requestScope.errorMessage}">
+        <p class="errorMessageText">${requestScope.errorMessage}</p>
+    </c:if>
+    <c:if test="${!empty sessionScope.journalName}">
+        <%--c:forEach items="${requestScope.data}" var="item">
+            ${item} <br/>
+        </c:forEach--%>
+    </c:if>
 
 </body>
 </html>

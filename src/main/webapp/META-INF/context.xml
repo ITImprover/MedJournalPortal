@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/Habitator" allowCasualMultipartParsing="true">
+<Context path="/medical-journals-portal" allowCasualMultipartParsing="true">
   <Resource auth="Container" driverClassName="org.apache.derby.jdbc.ClientDriver" name="jdbc/JournalsDB" password="user" type="javax.sql.DataSource" url="jdbc:derby://localhost:1527/med_journals;create=true" username="user"/>
 </Context>

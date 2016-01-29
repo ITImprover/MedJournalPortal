@@ -3,7 +3,4 @@
 <web-app xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <javaee:display-name>Medical Journals Portal</javaee:display-name>
 
-    <javaee:welcome-file-list>
-        <javaee:welcome-file>/index.jsp</javaee:welcome-file>
-    </javaee:welcome-file-list>
 </web-app>

@@ -1,6 +1,6 @@
 package com.crossover.medjournals.controller.UserManagement;
 
-import com.crossover.medjournals.controller.AbstractController;
+import com.crossover.medjournals.controller.AbstractServlet;
 import com.crossover.medjournals.dao.UserException;
 import com.crossover.medjournals.dao.UserService;
 
@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet("/register")
-public class RegisterController extends AbstractController {
+public class RegisterController extends AbstractServlet {
     public static final String REGISTRATION_JSP = "registration.jsp";
 
     private UserService userService;
@@ -33,26 +33,24 @@ public class RegisterController extends AbstractController {
             String journalName = request.getParameter("journalName");
             String password = request.getParameter("password");
             String passwordAgain = request.getParameter("passwordAgain");
-
             userService.registerUser(email, password, passwordAgain, journalName);
             Integer userId = userService.getUserIdByEmail(email);
             if (userId == null) {
                 request.setAttribute("errorMessage", "Registration failed");
-                redirectTo(request, response, REGISTRATION_JSP);
+                forward(request, response, REGISTRATION_JSP);
             } else {
                 request.getSession().setAttribute("userId", userId);
                 request.getSession().setAttribute("journalName", journalName);
-                request.getSession().setAttribute("isLoggedIn", true);
-                redirectTo(request, response, INDEX_JSP);
+                redirect(response, INDEX_JSP);
             }
         } catch (SQLException e) {
             Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, e);
             request.setAttribute("errorMessage", "Something going wrong");
-            redirectTo(request, response, REGISTRATION_JSP);
+            forward(request, response, REGISTRATION_JSP);
 //            throw new ServletException(e);
         } catch (UserException e) {
             request.setAttribute("errorMessage", e.getMessage());
-            redirectTo(request, response, REGISTRATION_JSP);
+            forward(request, response, REGISTRATION_JSP);
         }
     }
 
