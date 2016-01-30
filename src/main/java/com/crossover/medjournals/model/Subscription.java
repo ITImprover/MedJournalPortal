@@ -1,13 +1,16 @@
 package com.crossover.medjournals.model;
 
-public class Journal {
+public class Subscription {
     private String name;
 
     private Integer publisherId;
 
-    public Journal(String name, Integer publisherId) {
+    private boolean subscribed;
+
+    public Subscription(String name, Integer publisherId, boolean subscribed) {
         this.name = name;
         this.publisherId = publisherId;
+        this.subscribed = subscribed;
     }
 
     public String getName() {
@@ -24,5 +27,13 @@ public class Journal {
 
     public void setPublisherId(Integer publisherId) {
         this.publisherId = publisherId;
+    }
+
+    public boolean isSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        this.subscribed = subscribed;
     }
 }

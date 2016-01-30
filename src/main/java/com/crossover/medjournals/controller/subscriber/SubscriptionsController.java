@@ -1,8 +1,8 @@
 package com.crossover.medjournals.controller.subscriber;
 
 import com.crossover.medjournals.controller.AbstractController;
-import com.crossover.medjournals.dao.IssueService;
-import com.crossover.medjournals.model.Journal;
+import com.crossover.medjournals.dao.SubscriptionService;
+import com.crossover.medjournals.model.Subscription;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -20,12 +20,12 @@ public class SubscriptionsController extends AbstractController {
 
     private static final Logger LOGGER = Logger.getLogger(SubscriptionsController.class.getName());
     private static final String SUBSCRIPTIONS_JSP = "subscriptions.jsp";
-    private IssueService issueService;
+    private SubscriptionService subscriptionService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        issueService = new IssueService(dataSource);
+        subscriptionService = new SubscriptionService(dataSource);
     }
 
     @Override
@@ -33,13 +33,12 @@ public class SubscriptionsController extends AbstractController {
         Integer userId = (Integer) request.getSession().getAttribute("userId");
         if (userId != null && "".equals(request.getSession().getAttribute("journalName"))) {
             try {
-                List<Journal> issues = issueService.getSubscriptionsByUserId(userId);
-                LOGGER.info("issues[]: " + issues);
-                //request.setCharacterEncoding("UTF-8");
-                request.setAttribute("issues", issues);
-//            } catch (SQLException e) {
-//                LOGGER.log(Level.SEVERE, null, e);
-//                request.setAttribute("errorMessage", "Something going wrong");
+                List<Subscription> subscriptions = subscriptionService.getSubscriptionsByUserId(userId);
+                LOGGER.info("subscriptions[]: " + subscriptions);
+                request.setAttribute("subscriptions", subscriptions);
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, null, e);
+                request.setAttribute("errorMessage", "Something going wrong");
             }
             finally {
                 forward(request, response, SUBSCRIPTIONS_JSP);

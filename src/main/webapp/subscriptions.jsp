@@ -11,14 +11,21 @@
 
     <jsp:include page="menu.jsp"/>
     <jsp:include page="login.jsp"/>
-    Journals which you subscribed
+    <h1>Journals which you subscribed</h1>
     <c:if test="${!empty requestScope.errorMessage}">
         <p class="errorMessageText">${requestScope.errorMessage}</p>
     </c:if>
-    <c:if test="${!empty sessionScope.journalName}">
-        <%--c:forEach items="${requestScope.data}" var="item">
-            ${item} <br/>
-        </c:forEach--%>
+    <c:if test="${empty sessionScope.journalName}">
+        <table border="0">
+            <c:forEach items="${requestScope.subscriptions}" var="item">
+                <tr>
+                    <td>${item.name}</td>
+                    <td><c:if test="${not item.subscribed}">
+                        <a href="subscribe?publisherId=${item.publisherId}">Subscribe</a>
+                    </c:if></td>
+                </tr>
+            </c:forEach>
+        </table>
     </c:if>
 
 </body>
