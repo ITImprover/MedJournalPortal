@@ -2,7 +2,7 @@ package com.crossover.medjournals.controller.publisher;
 
 import com.crossover.medjournals.controller.AbstractController;
 import com.crossover.medjournals.controller.UserManagement.RegisterController;
-import com.crossover.medjournals.dao.IssueException;
+import com.crossover.medjournals.exception.IssueException;
 import com.crossover.medjournals.dao.IssueService;
 
 import javax.servlet.ServletConfig;

@@ -1,5 +1,6 @@
 package com.crossover.medjournals.dao;
 
+import com.crossover.medjournals.exception.UserException;
 import com.crossover.medjournals.model.Session;
 
 import javax.sql.DataSource;
@@ -58,7 +59,7 @@ public class UserService {
                     PreparedStatement ps = connection.prepareStatement(ADD_USER_SQL);
                     ps.setString(1, email);
                     ps.setString(2, password);
-                    ps.setString(3, journalName.length() > 0 ? journalName : null);
+                    ps.setString(3, journalName);
                     ps.execute();
                 }
             } finally {

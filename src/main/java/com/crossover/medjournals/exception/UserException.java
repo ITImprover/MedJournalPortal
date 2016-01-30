@@ -1,4 +1,4 @@
-package com.crossover.medjournals.dao;
+package com.crossover.medjournals.exception;
 
 /**
  * Created by Денис on 27.01.2016.

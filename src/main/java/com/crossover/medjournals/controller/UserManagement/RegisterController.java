@@ -1,7 +1,7 @@
 package com.crossover.medjournals.controller.UserManagement;
 
 import com.crossover.medjournals.controller.AbstractController;
-import com.crossover.medjournals.dao.UserException;
+import com.crossover.medjournals.exception.UserException;
 import com.crossover.medjournals.dao.UserService;
 
 import javax.servlet.ServletConfig;
@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 @WebServlet("/register")
 public class RegisterController extends AbstractController {
     public static final String REGISTRATION_JSP = "registration.jsp";
+    public static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
 
     private UserService userService;
 
@@ -31,6 +32,7 @@ public class RegisterController extends AbstractController {
         try {
             String email = request.getParameter("email");
             String journalName = request.getParameter("journalName");
+            journalName = journalName.length() > 0 ? journalName : null;
             String password = request.getParameter("password");
             String passwordAgain = request.getParameter("passwordAgain");
             userService.registerUser(email, password, passwordAgain, journalName);
@@ -44,7 +46,7 @@ public class RegisterController extends AbstractController {
                 redirect(response, MAIN_PAGE);
             }
         } catch (SQLException e) {
-            Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, e);
+            LOGGER.log(Level.SEVERE, null, e);
             request.setAttribute("errorMessage", "Something going wrong");
             forward(request, response, REGISTRATION_JSP);
 //            throw new ServletException(e);

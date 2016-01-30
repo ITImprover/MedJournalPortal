@@ -31,16 +31,16 @@ public class SubscriptionsController extends AbstractController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer userId = (Integer) request.getSession().getAttribute("userId");
-        if (userId != null && "".equals(request.getSession().getAttribute("journalName"))) {
+        if (userId != null && request.getSession().getAttribute("journalName") == null) {
             try {
                 List<Subscription> subscriptions = subscriptionService.getSubscriptionsByUserId(userId);
                 LOGGER.info("subscriptions[]: " + subscriptions);
                 request.setAttribute("subscriptions", subscriptions);
+                request.setAttribute("errorMessage", request.getAttribute("errorMessage"));
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, null, e);
                 request.setAttribute("errorMessage", "Something going wrong");
-            }
-            finally {
+            } finally {
                 forward(request, response, SUBSCRIPTIONS_JSP);
             }
         } else {

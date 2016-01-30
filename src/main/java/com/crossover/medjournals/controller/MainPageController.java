@@ -13,8 +13,6 @@ import java.io.IOException;
 public class MainPageController extends AbstractController {
 
     private static final String PUBLISHER_ISSUES = "publisherIssues";
-    private static final String SUBSCRIBER_JOURNALS = "subscriptions";
-    private IssueService issueService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -24,10 +22,10 @@ public class MainPageController extends AbstractController {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("userId") != null) {
-            if (!"".equals(request.getSession().getAttribute("journalName"))) {
+            if (request.getSession().getAttribute("journalName") != null) {
                 redirect(response, PUBLISHER_ISSUES);
             } else {
-                redirect(response, SUBSCRIBER_JOURNALS);
+                redirect(response, SUBSCRIPTIONS);
             }
         } else {
             redirect(response, LOGIN_JSP);

@@ -22,9 +22,13 @@ import java.util.List;
 public class SubscriptionService {
 
     private static final String GET_SUBSCRIPTIONS_SQL
-            = "SELECT JOURNAL_NAME, MED_JOURNALS.USERS.ID PUBLISHER_ID, SUBSCRIBER_USER_ID FROM MED_JOURNALS.USERS "
-            + "LEFT JOIN MED_JOURNALS.SUBSCRIPTIONS ON MED_JOURNALS.USERS.ID = PUBLISHER_USER_ID "
-            + "WHERE (JOURNAL_NAME IS NOT NULL) AND (SUBSCRIBER_USER_ID IS NULL OR SUBSCRIBER_USER_ID = ?)";
+            = "SELECT JOURNAL_NAME, MED_JOURNALS.USERS.ID PUBLISHER_ID, (SUBSCRIBER_USER_ID IS NOT NULL) SUBSCRIBED"
+            + " FROM MED_JOURNALS.USERS"
+            + " LEFT JOIN MED_JOURNALS.SUBSCRIPTIONS"
+            + " ON MED_JOURNALS.USERS.ID = PUBLISHER_USER_ID AND SUBSCRIBER_USER_ID = ?"
+            + " WHERE JOURNAL_NAME IS NOT NULL";
+    private static final String SUBSCRIBE_SQL
+            = "INSERT INTO MED_JOURNALS.SUBSCRIPTIONS (SUBSCRIBER_USER_ID, PUBLISHER_USER_ID) VALUES (?, ?)";
     private DataSource dataSource;
 
     public SubscriptionService(DataSource dataSource) {
@@ -42,11 +46,23 @@ public class SubscriptionService {
                 result.add(new Subscription(
                         rs.getString("JOURNAL_NAME"),
                         rs.getInt("PUBLISHER_ID"),
-                        rs.getObject("SUBSCRIBER_USER_ID") != null));
+                        rs.getBoolean("SUBSCRIBED")));
             }
         } finally {
             connection.close();
         }
         return result;
+    }
+
+    public void subscribe(Integer subscriberId, String publisherId) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement(SUBSCRIBE_SQL);
+            ps.setInt(1, subscriberId);
+            ps.setInt(2, Integer.parseInt(publisherId));
+            ps.execute();
+        } finally {
+            connection.close();
+        }
     }
 }

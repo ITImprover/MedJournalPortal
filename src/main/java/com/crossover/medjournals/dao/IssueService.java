@@ -1,5 +1,7 @@
 package com.crossover.medjournals.dao;
 
+import com.crossover.medjournals.exception.IssueException;
+
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.Connection;
