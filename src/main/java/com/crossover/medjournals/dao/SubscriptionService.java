@@ -54,12 +54,12 @@ public class SubscriptionService {
         return result;
     }
 
-    public void subscribe(Integer subscriberId, String publisherId) throws SQLException {
+    public void subscribe(Integer subscriberId, Integer publisherId) throws SQLException {
         Connection connection = dataSource.getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement(SUBSCRIBE_SQL);
             ps.setInt(1, subscriberId);
-            ps.setInt(2, Integer.parseInt(publisherId));
+            ps.setInt(2, publisherId);
             ps.execute();
         } finally {
             connection.close();

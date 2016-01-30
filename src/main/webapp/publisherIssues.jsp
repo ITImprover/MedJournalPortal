@@ -16,9 +16,15 @@
         <p class="errorMessageText">${requestScope.errorMessage}</p>
     </c:if>
     <c:if test="${!empty sessionScope.journalName}">
-        <c:forEach items="${requestScope.issues}" var="item">
-            ${item} <br/>
-        </c:forEach>
+        <table border="0">
+            <c:forEach items="${requestScope.issues}" var="item">
+                <tr>
+                    <td>${item.name}</td>
+                    <td><a href="deleteIssue?id=${item.id}"
+                                onclick="return confirm('Do you want delete issue `${item.name}`?')">Delete</a></td>
+                </tr>
+            </c:forEach>
+        </table>
     </c:if>
 
 </body>

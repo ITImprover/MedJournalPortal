@@ -1,4 +1,4 @@
-package com.crossover.medjournals.controller;
+package com.crossover.medjournals.utility;
 
 import java.io.BufferedReader;
 

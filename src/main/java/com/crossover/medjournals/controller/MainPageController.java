@@ -12,8 +12,6 @@ import java.io.IOException;
 @WebServlet("/")
 public class MainPageController extends AbstractController {
 
-    private static final String PUBLISHER_ISSUES = "publisherIssues";
-
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);

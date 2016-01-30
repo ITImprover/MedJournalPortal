@@ -2,6 +2,7 @@ package com.crossover.medjournals.controller.publisher;
 
 import com.crossover.medjournals.controller.AbstractController;
 import com.crossover.medjournals.dao.IssueService;
+import com.crossover.medjournals.model.Issue;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -32,10 +33,10 @@ public class PublisherIssuesController extends AbstractController {
         Integer userId = (Integer) request.getSession().getAttribute("userId");
         if (userId != null && !"".equals(request.getSession().getAttribute("journalName"))) {
             try {
-                List<String> issues = issueService.getIssuesByUserId(userId);
+                List<Issue> issues = issueService.getIssuesByUserId(userId);
                 LOGGER.info("issues[]: " + issues);
-                //request.setCharacterEncoding("UTF-8");
                 request.setAttribute("issues", issues);
+                request.setAttribute("errorMessage", request.getAttribute("errorMessage"));
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, null, e);
                 request.setAttribute("errorMessage", "Something going wrong");

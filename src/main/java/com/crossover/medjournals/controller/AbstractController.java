@@ -14,6 +14,7 @@ import java.io.IOException;
 public class AbstractController extends HttpServlet {
     protected static final String MAIN_PAGE = "";
     protected static final String LOGIN_JSP = "login.jsp";
+    protected static final String PUBLISHER_ISSUES = "publisherIssues";
     protected static final String SUBSCRIPTIONS = "subscriptions";
     @Resource(name = "jdbc/JournalsDB")
     protected DataSource dataSource;

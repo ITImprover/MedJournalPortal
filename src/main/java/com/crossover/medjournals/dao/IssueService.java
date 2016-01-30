@@ -1,6 +1,7 @@
 package com.crossover.medjournals.dao;
 
 import com.crossover.medjournals.exception.IssueException;
+import com.crossover.medjournals.model.Issue;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -25,7 +26,9 @@ public class IssueService {
     private static final String ADD_ISSUE_SQL
             = "INSERT INTO MED_JOURNALS.ISSUES (USER_ID, NAME, CONTENT) VALUES (?, ?, ?)";
     private static final String GET_PUBLISHER_ISSUES_SQL
-            = "SELECT NAME FROM MED_JOURNALS.ISSUES WHERE USER_ID = ?";
+            = "SELECT ID, NAME FROM MED_JOURNALS.ISSUES WHERE USER_ID = ?";
+    private static final String DELETE_ISSUE_SQL
+            = "DELETE FROM MED_JOURNALS.ISSUES WHERE ID = ?";
     private DataSource dataSource;
 
     public IssueService(DataSource dataSource) {
@@ -65,19 +68,30 @@ public class IssueService {
         }
     }
 
-    public List<String> getIssuesByUserId(Integer userId) throws SQLException {
-        List<String> result = new ArrayList<String>();
+    public List<Issue> getIssuesByUserId(Integer userId) throws SQLException {
+        List<Issue> result = new ArrayList<Issue>();
         Connection connection = dataSource.getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement(GET_PUBLISHER_ISSUES_SQL);
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                result.add(rs.getString("NAME"));
+                result.add(new Issue(rs.getInt("ID"), rs.getString("NAME")));
             }
         } finally {
             connection.close();
         }
         return result;
+    }
+
+    public void delete(Integer id) throws SQLException {
+        Connection connection = dataSource.getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement(DELETE_ISSUE_SQL);
+            ps.setInt(1, id);
+            ps.execute();
+        } finally {
+            connection.close();
+        }
     }
 }
